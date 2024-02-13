@@ -59,7 +59,7 @@ def run(image, result, settings):
                     box_rotated = cv2.boxPoints(rect_rotated)
                     box_rotated = np.int0(box_rotated)
                     center, size, angle = rect_rotated
-
+                    
                     cv2.drawContours(rotated_image, [box_rotated], 0, (0, 255, 0), 2)
         
             
