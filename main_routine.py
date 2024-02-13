@@ -1,6 +1,6 @@
 #get_contours(image) -> contours[]
-#get_biggest_box(contours) -> contour
-#get_Box(contour, minSize) -> box[], center, angle
+#get_biggest_contour(contours) -> contour
+#boundary_box(contour, minSize) -> box[], center, size, angle
 #align(image, center, angle) -> alignedimg
 #getcontours(alignedimg) -> fin_contours[]
 #get_Box(fin_conturs, minSize) -> fin_box[], center, angle
