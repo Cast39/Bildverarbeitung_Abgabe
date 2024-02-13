@@ -4,6 +4,10 @@ import Modules.get_contours as contour
 import Modules.get_biggest_contour as biggest
 
 def orient(image):
+
+    #ToDO check if useless
+
+
     height, width = image.shape[:2]
 
     orientImage = image.copy()

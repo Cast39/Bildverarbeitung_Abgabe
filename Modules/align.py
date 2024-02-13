@@ -2,11 +2,10 @@ import numpy as np
 import cv2
 
 def align(image,center,angle):
-    #kommt noch was  
 
-
-
-    
+    if(angle > 45):
+        angle -= 180
+ 
     alignImage = image.copy()
     # Rotiere das Bild um den Winkel
     align_matrix = cv2.getRotationMatrix2D(center, angle, scale=1)
