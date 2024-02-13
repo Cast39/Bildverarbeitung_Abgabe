@@ -2,7 +2,7 @@ import numpy as np
 import cv2
 
 
-def get_box(contour):
+def boundary_box(contour):
         
     rect = cv2.minAreaRect(contour)
     box = cv2.boxPoints(rect)
