@@ -1,11 +1,13 @@
 import os
 import cv2
 #own module
-import Modules.get_contours as get_contours
-import Modules.align as align
-import Modules.crop as crop
-import Modules.orient as orient
-import Modules.scale as scale
+from Modules.get_contours import get_contours
+from Modules.get_box import get_box
+from Modules.align import align
+from Modules.crop import crop
+from Modules.orient import orient
+from Modules.scale import scale
+
 
 testdata = {"path":".\Test\in",
             "destination":".\Test\out",
@@ -22,7 +24,10 @@ def main():
     #test functions
     for image in testdata["images"]:
         contours = get_contours(image)
-        print(contours)
+        cv2.fillPoly(image, contours, (0,0,255))
+        cv2.imshow("Konturen",image)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
 
 
 
