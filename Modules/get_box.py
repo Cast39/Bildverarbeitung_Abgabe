@@ -9,4 +9,4 @@ def get_box(contour):
     box = np.int0(box)
     center, size, angle = rect
 
-    return (box,center,angle)
+    return (box, center, size, angle)

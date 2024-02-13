@@ -1,10 +1,13 @@
 import numpy as np
 import cv2
 
-def align(image,center,angle):
+def align(image,center,angle, size):
 
     if(angle > 45):
-        angle -= 180
+        angle -= 90
+        print("angle is bigger 45")
+
+ 
  
     alignImage = image.copy()
     # Rotiere das Bild um den Winkel
