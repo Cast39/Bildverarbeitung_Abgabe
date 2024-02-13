@@ -15,4 +15,4 @@ def get_box(contours,min_contour_size):
             box = np.int0(box)
             center, size, angle = rect
 
-    return box
+    return (box,center,angle)
