@@ -10,6 +10,7 @@ def get_biggest_contour(contours):
         # Überprüfe, ob die Fläche größer als die Mindestkonturgröße ist
         if area > biggest_area:
             result_i = i
+    i +=1
     return contours[result_i]
             
 
