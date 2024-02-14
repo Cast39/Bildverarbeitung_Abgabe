@@ -40,42 +40,49 @@ def main():
         contours = get_contours(image)
         cv2.fillPoly(out, contours, (0, 0, 255))
         cv2.imshow("out", out)
+        cv2.setWindowTitle("out", "all contours")
         cv2.waitKey(0)
         # get_biggest_contour(contours) -> contour
         contour = get_biggest_contour(contours)
         cv2.fillPoly(out, contour, (0, 255, 0))
         cv2.imshow("out", out)
+        cv2.setWindowTitle("out", "biggest contour")
         cv2.waitKey(0)
         # boundarybox(contur, minSize) -> box[], center, angle
         box, center, size, angle = boundary_box(contour)
         cv2.polylines(out, [box], True, color=(255, 0, 0), thickness=4)
         cv2.imshow("out", out)
+        cv2.setWindowTitle("out", "boundary found")
         cv2.waitKey(0)
         # align(image, center, angle) -> alignedimg
         alignedimg = align(image, center, angle, size)
         out = alignedimg.copy()
         out = cv2.polylines(out, [box], True, color=(255, 0, 0), thickness=4)
         cv2.imshow("out", out)
+        cv2.setWindowTitle("out", "aligned")
         cv2.waitKey(0)
         # crop(alignedimg,fin_box[])
         out = crop(
             alignedimg, boundary_box(get_biggest_contour(get_contours(alignedimg)))[0]
         )
-        print(np.flip(out.shape[:2]))
+        # DEBUG: print(np.flip(out.shape[:2]))
         cv2.imshow("out", out)
         cv2.resizeWindow("out", np.flip(image.shape[:2]))
+        cv2.setWindowTitle("out", "cropped")
         cv2.waitKey(0)
         # orient(alignedimg) -> orientedimg
         out = orient(out)
         cv2.imshow("out", out)
+        cv2.setWindowTitle("out", "oriented")
         cv2.waitKey(0)
         # scale(orientedimg) -> finimg
         out = scale(out)
         cv2.imshow("out", out)
+        cv2.setWindowTitle("out", "scaled")
         cv2.waitKey(0)
         # save_to_png
-        saveToPNG(out, testdata["destination"] + "\\", testdata["filename"][i])
-        cv2.setWindowTitle("out", "Saved! to " + testdata["destination"])
+        _,state = saveToPNG(out, testdata["destination"] + "\\", testdata["filename"][i])
+        cv2.setWindowTitle("out", state)
         i += 1
         cv2.waitKey(0)
         cv2.destroyAllWindows()
