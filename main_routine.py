@@ -16,28 +16,80 @@ import Modules.orient as ori
 import Modules.save_to_png as save
 import Modules.scale as scale
 import cv2
+import os
+
+# # Aktuelles Arbeitsverzeichnis festlegen
+# current_directory = os.getcwd()
+
+# # Ordnerpfad mit den Bildern
+# folder_path = os.path.join(current_directory,"Images\src")
+
+# # Liste aller Dateien im Ordner
+# file_list = os.listdir(folder_path)
+
+# # Iteriere über jede Datei im Ordner
+# for file_name in file_list:
+#     # Verarbeite nur Bilddateien (ignoriere nicht-Bild-Dateien)
+#     if file_name.endswith(('.jpg', '.jpeg', '.JPG', '.png', '.bmp')):
+#         # Bildpfad erstellen
+#         image_path = os.path.join(folder_path, file_name)
+        
+#         # Bild laden
+#         image = cv2.imread(image_path)
+
+#         biggest_contour = bigcon.get_biggest_contour(con.get_contours(image))
+#         box, center,size, angle = get_box.get_box(biggest_contour)
+
+#         alignImage = ali.align(image,center, angle, size)
+#         biggest_align_contour = bigcon.get_biggest_contour(con.get_contours(alignImage))
+#         align_box, align_center, aligh_size, align_angle = get_box.get_box(biggest_align_contour)
+#         cv2.drawContours(alignImage, [align_box], 0, (0, 255, 0), 2)
+#         cropImage = cr.crop(alignImage,align_box)
+#         scaleImage = scale.scale(cropImage)
+
+#         # Speichere das bearbeitete Bild als PNG-Datei
+#         output_file_name = os.path.splitext(file_name)[0]
+#         output_path = os.path.join(folder_path, output_file_name)
+
+#         save.saveToPNG(scaleImage,os.path.join(current_directory,"Images\png_images"),output_file_name)
+
+# div.divide(os.path.join(current_directory,"Images\png_images"), os.path.join(current_directory,"Images\Train"), os.path.join(current_directory,"Images\Test"))
 
 
-image = cv2.imread(r"C:\Users\49152\Desktop\Bildverarbeitung_Abgabe\Images\anomaly_011.JPG")
-#image = cv2.imread(r"C:\Users\49152\Desktop\Bildverarbeitung_Abgabe\Images\anomaly_012.JPG")
-#image = cv2.imread(r"C:\Users\49152\Desktop\Bildverarbeitung_Abgabe\Images\normal_0000.JPG")
-#image = cv2.imread(r"C:\Users\49152\Desktop\Bildverarbeitung_Abgabe\Images\normal_0015.JPG")
-#image = cv2.imread(r"C:\Users\49152\Desktop\Bildverarbeitung_Abgabe\Images\normal_0029.JPG")
+
+
+
+
+# image = cv2.imread(r"C:\Users\49152\Desktop\Bildverarbeitung_Abgabe\Images\anomaly_011.JPG")
+# #image = cv2.imread(r"C:\Users\49152\Desktop\Bildverarbeitung_Abgabe\Images\anomaly_012.JPG")
+# #image = cv2.imread(r"C:\Users\49152\Desktop\Bildverarbeitung_Abgabe\Images\normal_0000.JPG")
+# #image = cv2.imread(r"C:\Users\49152\Desktop\Bildverarbeitung_Abgabe\Images\normal_0015.JPG")
+# #image = cv2.imread(r"C:\Users\49152\Desktop\Bildverarbeitung_Abgabe\Images\normal_0029.JPG")
+
+image = cv2.imread(r"C:\Users\49152\Desktop\Bildverarbeitung_Abgabe\Images\0003.JPG")
+#image = cv2.imread(r"C:\Users\49152\Desktop\Bildverarbeitung_Abgabe\Images\0010.JPG")
+#image = cv2.imread(r"C:\Users\49152\Desktop\Bildverarbeitung_Abgabe\Images\025.JPG")
+#image = cv2.imread(r"C:\Users\49152\Desktop\Bildverarbeitung_Abgabe\Images\035.JPG")
+#image = cv2.imread(r"C:\Users\49152\Desktop\Bildverarbeitung_Abgabe\Images\053.JPG")
+#image = cv2.imread(r"C:\Users\49152\Desktop\Bildverarbeitung_Abgabe\Images\095.JPG")
+#image = cv2.imread(r"C:\Users\49152\Desktop\Bildverarbeitung_Abgabe\Images\0297.JPG")
+#image = cv2.imread(r"C:\Users\49152\Desktop\Bildverarbeitung_Abgabe\Images\0360.JPG")
+#image = cv2.imread(r"C:\Users\49152\Desktop\Bildverarbeitung_Abgabe\Images\0383.JPG")
 
 biggest_contour = bigcon.get_biggest_contour(con.get_contours(image))
 box, center,size, angle = get_box.get_box(biggest_contour)
-
+cv2.drawContours(image, [box], 0, (0, 255, 0), 2)
 alignImage = ali.align(image,center, angle, size)
 biggest_align_contour = bigcon.get_biggest_contour(con.get_contours(alignImage))
 align_box, align_center, aligh_size, align_angle = get_box.get_box(biggest_align_contour)
 cv2.drawContours(alignImage, [align_box], 0, (0, 255, 0), 2)
 cropImage = cr.crop(alignImage,align_box)
 scaleImage = scale.scale(cropImage)
-save.saveToPNG(scaleImage,r"C:\Users\49152\Desktop\Bildverarbeitung_Abgabe\Images\Train","anomaly_011")
+#save.saveToPNG(scaleImage,r"C:\Users\49152\Desktop\Bildverarbeitung_Abgabe\Images\Train","anomaly_011")
 
 #image_height, image_width = scaleImage.shape[:2]
 #print("Bildgröße (Breite x Höhe):", image_width, "x", image_height, "Pixel")
 
-cv2.imshow("Image with box", scaleImage)
+cv2.imshow("Image with box", image)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
