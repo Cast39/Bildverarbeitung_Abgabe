@@ -3,9 +3,11 @@
 #boundary_box(contour, minSize) -> box[], center, size, angle
 #align(image, center, angle) -> alignedimg
 #getcontours(alignedimg) -> fin_contours[]
-#get_Box(fin_conturs, minSize) -> fin_box[], center, angle
+#boundary_box(fin_conturs, minSize) -> fin_box[], center, angle
 #crop(alignedimg,fin_box[])
-#orient -TODO
+#orient(alignedimg) -> orientedimg
+#scale
+#save_to_png
 
 import Modules.align as ali
 import Modules.crop as cr
