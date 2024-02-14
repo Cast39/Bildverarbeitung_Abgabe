@@ -10,9 +10,15 @@ from Modules.align import align
 from Modules.crop import crop
 from Modules.orient import orient
 from Modules.scale import scale
+from Modules.save_to_png import saveToPNG
 
 
-testdata = {"path": ".\\Test\\in", "destination": ".\\Test\\out", "images": []}
+testdata = {
+    "path": ".\\Test\\in",
+    "destination": ".\\Test\\out",
+    "images": [],
+    "filename": [],
+}
 
 
 def main():
@@ -21,9 +27,13 @@ def main():
     for file in os.listdir(testdata["path"]):
         if file.lower().endswith((".jpg", ".png", ".tiff", ".tif")):
             testdata["images"].append(cv2.imread(testdata["path"] + "\\" + file))
+            testdata["filename"].append(file)
     # DEBUG:print(testdata["images"][0][25, 25])
 
     # test functions -DEBUG state rn, TODO: formal Tests
+    # Test all images in testdata["path"] and saves them to source
+    # After each processing step the image window updates, press any key to continue to next step
+    i = 0
     for image in testdata["images"]:
         # get_contours(image) -> contours[]
         out = image.copy()
@@ -59,8 +69,14 @@ def main():
         out = orient(out)
         cv2.imshow("out", out)
         cv2.waitKey(0)
-
-
+        # scale(orientedimg) -> finimg
+        out = scale(out)
+        cv2.imshow("out", out)
+        cv2.waitKey(0)
+        # save_to_png
+        saveToPNG(out, testdata["destination"] + "\\", testdata["filename"][i])
+        cv2.setWindowTitle("out", "Saved! to " + testdata["destination"])
+        i += 1
         cv2.waitKey(0)
         cv2.destroyAllWindows()
 
