@@ -41,11 +41,11 @@ for file_name in file_list:
         image = cv2.imread(image_path)
 
         biggest_contour = bigcon.get_biggest_contour(con.get_contours(image))
-        box, center,size, angle = bbox.get_box(biggest_contour)
+        box, center,size, angle = bbox.boundary_box(biggest_contour)
 
         alignImage = ali.align(image,center, angle, size)
         biggest_align_contour = bigcon.get_biggest_contour(con.get_contours(alignImage))
-        align_box, align_center, aligh_size, align_angle = bbox.get_box(biggest_align_contour)
+        align_box, align_center, aligh_size, align_angle = bbox.boundary_box(biggest_align_contour)
         cv2.drawContours(alignImage, [align_box], 0, (0, 255, 0), 2)
         cropImage = cr.crop(alignImage,align_box)
         scaleImage = scale.scale(cropImage)
@@ -57,7 +57,7 @@ for file_name in file_list:
         save.saveToPNG(scaleImage,os.path.join(current_directory,"Images\png_images"),output_file_name)
 
 div.divide(os.path.join(current_directory,"Images\png_images"), os.path.join(current_directory,"Images\out\Train"), os.path.join(current_directory,"Images\out\Test"))
-
+print("Done.")
 
 
 
