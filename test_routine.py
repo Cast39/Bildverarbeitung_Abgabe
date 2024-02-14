@@ -3,6 +3,7 @@ import cv2
 import numpy as np
 
 # own module
+from Modules.remove_background import remove_background
 from Modules.get_contours import get_contours
 from Modules.get_biggest_contour import get_biggest_contour
 from Modules.boundary_box import boundary_box
@@ -35,8 +36,14 @@ def main():
     # After each processing step the image window updates, press any key to continue to next step
     i = 0
     for image in testdata["images"]:
-        # get_contours(image) -> contours[]
         out = image.copy()
+        # remove_background
+        out = remove_background(image)
+        cv2.imshow("out", out)
+        cv2.setWindowTitle("out", "no background")
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
+        # get_contours(image) -> contours[]
         contours = get_contours(image)
         cv2.fillPoly(out, contours, (0, 0, 255))
         cv2.imshow("out", out)

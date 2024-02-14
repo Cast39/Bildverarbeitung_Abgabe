@@ -1,3 +1,4 @@
+#remove_background(image)
 #get_contours(image) -> contours[]
 #get_biggest_contour(contours) -> contour
 #boundary_box(contour, minSize) -> box[], center, size, angle
