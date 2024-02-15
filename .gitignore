@@ -1,3 +1,6 @@
 Test/*
-Images/*
+Images/src/*
+Images/out/Test/*
+Images/out/Train/*
+Images/out/png_images/*
 Modules/__pycache__/*
