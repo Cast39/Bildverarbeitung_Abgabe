@@ -19,6 +19,7 @@ import Modules.get_contours as con
 import Modules.orient as ori
 import Modules.save_to_png as save
 import Modules.scale as scale
+import Modules.sigmentierung as sig
 import cv2
 import os
 
@@ -37,15 +38,19 @@ for file_name in file_list:
     if file_name.endswith(('.jpg', '.jpeg', '.JPG', '.png', '.bmp')):
         # Bildpfad erstellen
         image_path = os.path.join(folder_path, file_name)
-        
+
         # Bild laden
         image = cv2.imread(image_path)
 
-        biggest_contour = bigcon.get_biggest_contour(con.get_contours(image))
+        sigmentiertesImage = sig.sigmentierung(image)
+        biggest_contour = bigcon.get_biggest_contour(con.get_contours(sigmentiertesImage))
         box, center,size, angle = bbox.boundary_box(biggest_contour)
 
         alignImage = ali.align(image,center, angle, size)
-        biggest_align_contour = bigcon.get_biggest_contour(con.get_contours(alignImage))
+        sigmentiertesalignImage = sig.sigmentierung(alignImage)
+        sigmentiertesalignImage = cv2.bitwise_not(sigmentiertesalignImage)
+        
+        biggest_align_contour = bigcon.get_biggest_contour(con.get_contours(sigmentiertesalignImage))
         align_box, align_center, aligh_size, align_angle = bbox.boundary_box(biggest_align_contour)
         cv2.drawContours(alignImage, [align_box], 0, (0, 255, 0), 2)
         cropImage = cr.crop(alignImage,align_box)
