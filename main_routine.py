@@ -40,7 +40,7 @@ for file_name in file_list:
         image_path = os.path.join(folder_path, file_name)
 
         # Bild laden
-        image = cv2.imread(image_path)
+        image = cv2.cvtColor(cv2.imread(image_path), cv2.COLOR_RGB2RGBA)
 
         sigmentiertesImage = seg.segmentierung(image)
         biggest_contour = bigcon.get_biggest_contour(

@@ -9,7 +9,6 @@ def remove_background(image, colour=(5, 5, 5), tolerance=15):
     param.minThreshold = 10
     param.maxThreshold = 150
 
-    cv2.cvtColor(image, cv2.COLOR_RGB2RGBA, image)
     detector = cv2.SimpleBlobDetector()
     detector= detector.create(param)
     blobs = detector.detect(image)

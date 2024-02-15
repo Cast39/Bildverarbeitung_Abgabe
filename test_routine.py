@@ -27,7 +27,11 @@ def main():
     print("reading from: " + testdata["path"])
     for file in os.listdir(testdata["path"]):
         if file.lower().endswith((".jpg", ".png", ".tiff", ".tif")):
-            testdata["images"].append(cv2.imread(testdata["path"] + "\\" + file))
+            testdata["images"].append(
+                cv2.cvtColor(
+                    cv2.imread(testdata["path"] + "\\" + file), cv2.COLOR_RGB2RGBA
+                )
+            )
             testdata["filename"].append(file)
     # DEBUG:print(testdata["images"][0][25, 25])
 
@@ -40,13 +44,13 @@ def main():
         def show(msg):
             cv2.imshow("out", out)
             cv2.setWindowTitle("out", msg)
-            if cv2.waitKey(0) == ord('s'):
+            if cv2.waitKey(0) == ord("s"):
                 _, state = saveToPNG(
                     out, testdata["destination"] + "\\", testdata["filename"][i], msg
                 )
                 cv2.setWindowTitle("out", state)
                 cv2.waitKey(0)
-        
+
         ###init
         out = image.copy()
         show(testdata["filename"][i])
@@ -62,7 +66,7 @@ def main():
         contour = get_biggest_contour(contours)
         cv2.fillPoly(out, contour, (0, 255, 0))
         show("biggest contour")
-        # boundarybox(contur, minSize) -> box[], center, angle
+        # boundary_box(contur, minSize) -> box[], center, angle
         box, center, size, angle = boundary_box(contour)
         cv2.polylines(out, [box], True, color=(255, 0, 0), thickness=4)
         show("boundary")
