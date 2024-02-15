@@ -26,7 +26,7 @@ import os
 current_directory = os.getcwd()
 
 # Ordnerpfad mit den Bildern
-folder_path = os.path.join(current_directory,"Images\src")
+folder_path = os.path.join(current_directory,"Images\\src")
 
 # Liste aller Dateien im Ordner
 file_list = os.listdir(folder_path)
@@ -55,9 +55,9 @@ for file_name in file_list:
         output_file_name = os.path.splitext(file_name)[0]
         output_path = os.path.join(folder_path, output_file_name)
 
-        save.saveToPNG(scaleImage,os.path.join(current_directory,"Images\png_images"),output_file_name)
+        save.saveToPNG(scaleImage,os.path.join(current_directory,"Images\\png_images"),output_file_name)
 
-div.divide(os.path.join(current_directory,"Images\png_images"), os.path.join(current_directory,"Images\out\Train"), os.path.join(current_directory,"Images\out\Test"))
+div.divide(os.path.join(current_directory,"Images\\png_images"), os.path.join(current_directory,"Images\\out\\Train"), os.path.join(current_directory,"Images\\out\\Test"))
 print("Done.")
 
 
