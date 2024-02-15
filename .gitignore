@@ -2,6 +2,7 @@ Images/src/*
 Images/out/Test/*
 Images/out/Train/*
 Images/out/png_images/*
+Test/*.JPG
 Test/in/*
 Test/out/*
 Modules/__pycache__/*
