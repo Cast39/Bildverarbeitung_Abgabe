@@ -1,7 +1,7 @@
 import numpy as np
 import cv2
 
-param = 0.15 # Zwischen 0..1 ?
+param = 0.05 # Zwischen 0..1 ?
 
 #def boundary_box(contour):
 def boundary_box(contours, width, height):
@@ -18,7 +18,7 @@ def boundary_box(contours, width, height):
     counter = 0
     for contour in contours:
         print(counter)
-        newtrain = contour[:,0,:][0:len(contour)//100:len(contour)].astype(np.float32)
+        newtrain = contour[:,0,:].astype(np.float32)
 
         train.extend(newtrain) # remove weird format artefact
         response.extend([counter]*(len(newtrain)))
@@ -31,14 +31,19 @@ def boundary_box(contours, width, height):
     print(response)
     svm.train(train, cv2.ml.ROW_SAMPLE, response)
 
-    mat=np.zeros((width*height,2))
-    for i in range(height-1):
-        for j in range(width-1):
-            mat[i*height+j,:]=[i,j]
-            
+    mat=np.zeros((width*height,2)).astype(np.float32)
+    #print(mat.shape)
+    for i in range(height):
+        for j in range(width):
+            mat[i*width+j,:]=[i,j]
+    
+    #print(mat)
     erg = svm.predict(mat.astype(np.float32))
     erg = erg[1].reshape(height,width)
 
+    #erg = mat.reshape(height, width, 2)
+    #erg = erg[:,:,1].astype(np.float32)
+    #print(erg.shape)
     cv2.normalize(erg,erg,0, 1, cv2.NORM_MINMAX)
     #erg=cv2.resize(erg,None,None,10,10,cv2.INTER_NEAREST)
 
