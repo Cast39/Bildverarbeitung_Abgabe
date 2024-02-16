@@ -1,20 +1,16 @@
-import numpy as np
 import cv2
-from Modules.get_contours import get_contours
-from Modules.get_biggest_contour import get_biggest_contour
-
 
 def orient(image):
     ret = image.copy()
     height, width = image.shape[:2]
 
-    # case of perfekt vertical alignement
+    # case of perfect vertical alignement
     if height > width:
         ret = cv2.rotate(image, cv2.ROTATE_90_CLOCKWISE)
 
     # define vertical center
-    contour = get_biggest_contour(get_contours(ret))
-    M = cv2.moments(contour)
+    _,_,b,_ = cv2.split(image)
+    M = cv2.moments(b, True)
 
     # Vermeide eine Division durch Null
     if M["m00"] != 0:

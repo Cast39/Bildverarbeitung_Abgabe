@@ -2,7 +2,7 @@ import numpy as np
 import cv2
 
 
-def align(image, center, angle, size):
+def align(image, center, angle, size=0):
 
     if angle > 45:
         angle -= 90

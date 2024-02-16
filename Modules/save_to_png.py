@@ -2,7 +2,9 @@ import cv2
 import os
 
 
-def saveToPNG(image, folder_path, file_name, file_name_appendix="edited", overwrite=True):
+def saveToPNG( image, folder_path, file_name, 
+    file_name_appendix="edited", overwrite=True ):
+    
     # Synthezise file path
     output_file_name = (
         os.path.splitext(file_name)[0] + "_" + file_name_appendix + ".png"
@@ -11,7 +13,7 @@ def saveToPNG(image, folder_path, file_name, file_name_appendix="edited", overwr
     # try writing it
     if not (os.path.exists(folder_path)):  # unless folder doesn't exist
         return (-1, "path dosn't exist")
-    if (os.path.exists(output_path) and overwrite == False):  # unless filename exists
+    if os.path.exists(output_path) and overwrite == False:  # unless filename exists
         return (-1, "file exists already")
 
     try:

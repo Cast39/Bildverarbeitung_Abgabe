@@ -2,10 +2,10 @@ import os
 import random
 import shutil
 
-def divide(folder_path,train_folder,test_folder):
+def divide(source_path,train_folder,test_folder):
 
     # Liste aller Dateien im Ordner
-    file_list = os.listdir(folder_path)
+    file_list = os.listdir(source_path)
 
     # Bestimme die Anzahl der Trainings- und Testbilder
     num_total_images = len(file_list)
@@ -18,7 +18,7 @@ def divide(folder_path,train_folder,test_folder):
     # Iteriere über alle Dateien im Ordner
     for file_name in file_list:
         # Bildpfad erstellen
-        image_path = os.path.join(folder_path, file_name)
+        image_path = os.path.join(source_path, file_name)
         
         # Bestimme das Zielverzeichnis basierend auf der Zugehörigkeit zum Trainings- oder Testdatensatz
         if file_name in train_images:
