@@ -3,8 +3,7 @@ import os
 
 # own module
 from Modules.segment import segment
-from Modules.get_contours import get_contours
-from Modules.get_biggest_contour import get_biggest_contour
+from Modules.get_contour import get_contour
 from Modules.boundary_box import boundary_box
 from Modules.align import align
 from Modules.crop import crop
@@ -13,52 +12,48 @@ from Modules.scale import scale
 from Modules.save_to_png import saveToPNG
 from Modules.divide import divide
 
-# Feel free to test within test_routine.py 
+# Feel free to test within test_routine.py
 # only then replace the following with a better sequence if found
 ### define algorithm:
 # 1. segment(image) -> transparentimg
-# 2. get_contours(transparentimage) -> contours[]
-# 3. get_biggest_contour(contours[]) -> contour
-# 4. boundary_box(contour) -> 'box[], center, size, angle
+# 2. get_contour(transparentimage) -> contour
+# 3. boundary_box(contour) -> 'box[], center, size, angle
 
-# 5. align(transparentimg, center, angle) -> altransimg
-# *6. getcontours(altransimg) -> fin_contours[]             *can be replaced by enhancable function module "merge"
-# *7. get_biggest_contour(fin_contours[]) -> fin_contour
-# *8. boundary_box(fin_contur) -> fin_box[], 'center, 'angle
+# 4. align(transparentimg, center, angle) -> altransimg
+# *5. get_contour(altransimg) -> fin_contour                *can be replaced by enhancable function module "merge"
+# *6. boundary_box(fin_contur) -> fin_box[], 'center, 'angle
 
-# 9. align(image, center, angle) -> alignedimg             <- !origimg! for conserving background
-# 10. crop(alignedimg,fin_box[]) -> croppedimg
-# 11. orient(croppedimg) -> orientedimg
-# 12. scale(orientedimg) -> final_img
+# 7. align(image, center, angle) -> alignedimg             <- !origimg! for conserving background
+# 8. crop(alignedimg,fin_box[]) -> croppedimg
+# 9. orient(croppedimg) -> orientedimg
+# 10. scale(orientedimg) -> final_img
 
-# (13. save_to_png(final_img))
+# (11. save_to_png(final_img))
 
 
 ### implementation of algorithm:
 def edit_image(image):
     transparentImage = segment(image)  # 1
-    _, center, size, angle = boundary_box(
-        get_biggest_contour(get_contours(transparentImage))
-    )  # 2+3+4
+    _, center, size, angle = boundary_box(get_contour(transparentImage))  # 2+3
 
-    alignedImage = align(transparentImage, center, angle, size)  # 5
-    box, _ = boundary_box(get_biggest_contour(get_contours(alignedImage)))  # 6+7+8
-    # also possible instead of 5+6+7, maybe own module "merge"?
-    # sigmentiertesalignImage = seg.segmentierung(alignImage)
-    # sigmentiertesalignImage = cv2.bitwise_not(sigmentiertesalignImage)
+    alignedImage = align(transparentImage, center, angle, size)  # 4
+    box, _ = boundary_box(get_contour(alignedImage))  # 5+6
+    # also possible instead of 5+6, maybe own module "merge"?
+    # segmentiertesalignImage = seg.segmentierung(alignImage)
+    # segmentiertesalignImage = cv2.bitwise_not(segmentiertesalignImage)
 
-    alignedImage = align(image, center, angle, size)  # 9
+    alignedImage = align(image, center, angle, size)  # 7
     # DEBUG: cv2.drawContours(alignImage, [align_box], 0, (0, 255, 0, 255), 2), not for main_routine pls reffer to test_routine
-    image = crop(alignedImage, box)  # 10
-    image = orient(image)  # 11
-    return scale(image)  # 12
+    image = crop(alignedImage, box)  # 8
+    image = orient(image)  # 9
+    return scale(image)  # 10
 
 
 ### handle whole dataset
 
 # Aktuelles Arbeitsverzeichnis festlegen
 current_directory = os.getcwd()
-folder_path = os.path.join(current_directory, "Images\src")
+folder_path = os.path.join(current_directory, "Images\in")
 
 # Iteriere über jede Datei im Ordner
 file_list = os.listdir(folder_path)
@@ -92,7 +87,7 @@ divide(
 print("Done.")
 
 
-#############archive############## 
+#############archive##############
 
 # image = cv2.imread(r"C:\Users\49152\Desktop\Bildverarbeitung_Abgabe\Images\anomaly_011.JPG")
 # #image = cv2.imread(r"C:\Users\49152\Desktop\Bildverarbeitung_Abgabe\Images\anomaly_012.JPG")

@@ -5,8 +5,7 @@ import numpy as np
 # own module
 from Modules.segment import segment
 from Modules.remove_background import remove_background
-from Modules.get_contours import get_contours
-from Modules.get_biggest_contour import get_biggest_contour
+from Modules.get_contour import get_contour
 from Modules.boundary_box import boundary_box
 from Modules.align import align
 from Modules.crop import crop
@@ -15,7 +14,7 @@ from Modules.scale import scale
 from Modules.save_to_png import saveToPNG
 
 
-testdata = {
+TESTDATA = {
     "path": ".\\Test\\in",
     "destination": ".\\Test\\out",
     "images": [],
@@ -25,22 +24,22 @@ testdata = {
 
 def main():
     # init all pictures in /Test/in
-    print("reading from: " + testdata["path"])
-    for file in os.listdir(testdata["path"]):
+    print("reading from: " + TESTDATA["path"])
+    for file in os.listdir(TESTDATA["path"]):
         if file.lower().endswith((".jpg", ".png", ".tiff", ".tif")):
-            testdata["images"].append(
+            TESTDATA["images"].append(
                 cv2.cvtColor(
-                    cv2.imread(testdata["path"] + "\\" + file), cv2.COLOR_RGB2RGBA
+                    cv2.imread(TESTDATA["path"] + "\\" + file), cv2.COLOR_RGB2RGBA
                 )
             )
-            testdata["filenames"].append(file)
-    # DEBUG:print(testdata["images"][0][25, 25])
+            TESTDATA["filenames"].append(file)
+    # DEBUG:print(TESTDATA["images"][0][25, 25])
 
     # test functions -DEBUG state rn, TODO: formal Tests, if possible
-    # Test all images in testdata["path"] and saves them to destination
+    # Test all images in TESTDATA["path"] and saves them to destination
     # After each processing step the image window updates, press any key to continue to next step
     i = 0
-    for image in testdata["images"]:
+    for image in TESTDATA["images"]:
         # pls ignore helper fn
         def show(msg):
             cv2.imshow("out", out)
@@ -48,8 +47,8 @@ def main():
             if cv2.waitKey(0) == ord("s"):
                 _, state = saveToPNG(
                     out,
-                    testdata["destination"] + "\\",
-                    testdata["filenames"][i],
+                    TESTDATA["destination"] + "\\",
+                    TESTDATA["filenames"][i],
                     msg,
                     True,
                 )
@@ -58,7 +57,7 @@ def main():
 
         ###init
         out = np.copy(image)
-        show(testdata["filenames"][i])
+        show(TESTDATA["filenames"][i])
 
 # implement your sequence here, 
 # every image stored in var out will be displayed by fn show()
@@ -75,15 +74,10 @@ def main():
         # out = remove_background(image)
         # show("nobckgrnd")
 
-        # get_contours(transparentimage) -> contours[]
-        contours = get_contours(image)
-        cv2.fillPoly(out, contours, (0, 0, 255, 255))
-        show("contours")
-
-        # get_biggest_contour(contours[]) -> contour
-        contour = get_biggest_contour(contours)
+        # get_contour(transparentimage) -> contour
+        contour = get_contour(image)
         cv2.fillPoly(out, contour, (0, 255, 0, 255))
-        show("biggest contour")
+        show("contour")
 
         # boundary_box(contur) -> box[], center, angle
         box, center, size, angle = boundary_box(contour)
@@ -97,7 +91,7 @@ def main():
         show("aligned")
 
         # crop(alignedimg,fin_box[])
-        image = crop(image, boundary_box(get_biggest_contour(get_contours(image)))[0])
+        image = crop(image, boundary_box(get_contour(image))[0])
         out = image.copy()
         # DEBUG: print(np.flip(out.shape[:2]))
         show("cropped")
@@ -115,8 +109,8 @@ def main():
         # save_to_png
         _, state = saveToPNG(
             image,
-            testdata["destination"] + "\\",
-            testdata["filenames"][i],
+            TESTDATA["destination"] + "\\",
+            TESTDATA["filenames"][i],
             overwrite=False,
         )
         show(state)
