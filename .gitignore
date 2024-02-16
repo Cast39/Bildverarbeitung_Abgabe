@@ -1,8 +1,8 @@
 Images/in/*.JPG
-Images/out/Test/*.PNG
-Images/out/Train/*.PNG
-Images/out/png_images/*
+Images/out/Test/*.png
+Images/out/Train/*.png
+Images/out/png_images/*.png
 Test/*.JPG
 Test/in/*.JPG
-Test/out/*.PNG
+Test/out/*.png
 Modules/__pycache__/*.pyc

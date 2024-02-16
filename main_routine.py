@@ -37,7 +37,7 @@ def edit_image(image):
     _, center, size, angle = boundary_box(get_contour(transparentImage))  # 2+3
 
     alignedImage = align(transparentImage, center, angle, size)  # 4
-    box, _ = boundary_box(get_contour(alignedImage))  # 5+6
+    box,_,_,_ = boundary_box(get_contour(alignedImage))  # 5+6
     # also possible instead of 5+6, maybe own module "merge"?
     # segmentiertesalignImage = seg.segmentierung(alignImage)
     # segmentiertesalignImage = cv2.bitwise_not(segmentiertesalignImage)
@@ -73,14 +73,14 @@ for file_name in file_list:
 
         saveToPNG(
             edit_image(image),
-            os.path.join(current_directory, "Images\png_images"),
+            os.path.join(current_directory, "Images\out"),
             output_file_name,
             overwrite=True,
         )
 
 # Teile Bilder zufällig in Training- und Test-Datensätze
 divide(
-    os.path.join(current_directory, "Images\png_images"),
+    os.path.join(current_directory, "Images\out"),
     os.path.join(current_directory, "Images\out\Train"),
     os.path.join(current_directory, "Images\out\Test"),
 )
