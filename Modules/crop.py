@@ -1,22 +1,23 @@
-import numpy as np
 import cv2
+import numpy as np
 
 
-def crop(image,box):
-    
+def crop(image, box, aspect_ratio=980/565):
 
     # Koordinaten der Box extrahieren
     x, y, w, h = cv2.boundingRect(box)
 
-    # Bildausschnitt basierend auf den Boxkoordinaten ausschneiden
-    cropped_image = image[y:y+h, x:x+w]
+    # case pins are deformed over board
+    box_aspect_ratio = np.round(w/h,1)
+    aspect_ratio = np.round(aspect_ratio,1)
+    if (box_aspect_ratio>aspect_ratio):
+        vert_pad = int((aspect_ratio * w) // h)
+    else:
+        vert_pad = 1
 
-    #desired_size = (980, 565)
-    # Konvertiere die Eckpunkte des Rechtecks in das richtige Format für die Transformation
-    #src_points = np.float32([[box[1][0],box[1][1]], [box[0][0],box[0][1]], [box[2][0],box[2][1]], [box[3][0],box[3][1]]])#box_rotated
-    #dst_points = np.float32([[0, 0], [0, desired_size[1]], [desired_size[0], 0], [desired_size[0], desired_size[1]]])
-    #warped_pcb2 = cv2.getPerspectiveTransform(src_points, dst_points)
-    #warped_pcb2 = cv2.warpPerspective(image, warped_pcb2, desired_size)
+    # Bildausschnitt basierend auf den Boxkoordinaten und padding ausschneiden
+    cropped_image = image[
+        (y - (vert_pad + h)) : (y + h), 
+        (x) : (x + w)
+    ]
     return cropped_image
-
-    

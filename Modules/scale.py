@@ -1,6 +1,7 @@
 import numpy as np
 import cv2
 
+# Maybe replace by "stamp"
 
 def scale(image):
 
