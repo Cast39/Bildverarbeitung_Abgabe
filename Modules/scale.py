@@ -5,6 +5,6 @@ import cv2
 
 def scale(image):
 
-    return cv2.resize(image, (980, 565))
+    return cv2.resize(image, (980, 580))
 
             
