@@ -4,6 +4,7 @@ import numpy as np
 
 # own module
 from Modules.segmentierung import segmentierung
+from Modules.remove_background import remove_background
 from Modules.get_contours import get_contours
 from Modules.get_biggest_contour import get_biggest_contour
 from Modules.boundary_box import boundary_box
@@ -46,18 +47,26 @@ def main():
             cv2.setWindowTitle("out", msg)
             if cv2.waitKey(0) == ord("s"):
                 _, state = saveToPNG(
-                    out, testdata["destination"] + "\\", testdata["filename"][i], msg
+                    out,
+                    testdata["destination"] + "\\",
+                    testdata["filename"][i],
+                    msg,
+                    True,
                 )
                 cv2.setWindowTitle("out", state)
                 cv2.waitKey(0)
 
         ###init
-        out = image.copy()
+        out = np.copy(image)
         show(testdata["filename"][i])
         ###flow
         # segementierung(image)
-        out = segmentierung(image)
-        show("no background")
+        image = segmentierung(image)
+        out = image.copy()
+        show("segmented")
+        # remove_background(image, rey, +-15)
+        # out = remove_background(image)
+        # show("nobckgrnd")
         # get_contours(image) -> contours[]
         contours = get_contours(image)
         cv2.fillPoly(out, contours, (0, 0, 255))
@@ -71,28 +80,31 @@ def main():
         cv2.polylines(out, [box], True, color=(255, 0, 0), thickness=4)
         show("boundary")
         # align(image, center, angle) -> alignedimg
-        alignedimg = align(image, center, angle, size)
-        out = alignedimg.copy()
+        image = align(image, center, angle, size)
+        out = image.copy()
         out = cv2.polylines(out, [box], True, color=(255, 0, 0), thickness=4)
         show("aligned")
         # crop(alignedimg,fin_box[])
-        out = crop(
-            alignedimg, boundary_box(get_biggest_contour(get_contours(alignedimg)))[0]
+        image = crop(
+            image, boundary_box(get_biggest_contour(get_contours(image)))[0]
         )
+        out = image.copy()
         # DEBUG: print(np.flip(out.shape[:2]))
         show("cropped")
         # orient(alignedimg) -> orientedimg
-        out = orient(out)
+        image = orient(image)
+        out = image.copy()
         show("oriented")
         # scale(orientedimg) -> finimg
-        out = scale(out)
+        image = scale(image)
+        out = image.copy()
         show("scaled")
         # save_to_png
         _, state = saveToPNG(
-            out, testdata["destination"] + "\\", testdata["filename"][i]
+            image, testdata["destination"] + "\\", testdata["filename"][i], overwrite=False
         )
-        i += 1
         show(state)
+        i += 1
         cv2.destroyAllWindows()
 
 
