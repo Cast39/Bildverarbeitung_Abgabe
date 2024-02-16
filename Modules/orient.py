@@ -5,14 +5,15 @@ from Modules.get_biggest_contour import get_biggest_contour
 
 
 def orient(image):
+    ret = image.copy()
     height, width = image.shape[:2]
 
-    orientImage = image.copy()
-    # Zentrum des Bildes berechnen
-    center_x = width // 2
-    center_y = height // 2
-    image_center = (center_x, center_y)
-    contour = get_biggest_contour(get_contours(image))
+    # case of perfekt vertical alignement
+    if height > width:
+        ret = cv2.rotate(image, cv2.ROTATE_90_CLOCKWISE)
+
+    # define vertical center
+    contour = get_biggest_contour(get_contours(ret))
     M = cv2.moments(contour)
 
     # Vermeide eine Division durch Null
@@ -23,8 +24,5 @@ def orient(image):
         cY = 0
 
     if cY > height // 2:
-        orient_matrix = cv2.getRotationMatrix2D(image_center, 180, scale=1)
-        orientImage = cv2.warpAffine(
-            image, orient_matrix, (image.shape[1], image.shape[0])
-        )
-    return orientImage
+        ret = cv2.rotate(image, cv2.ROTATE_180)
+    return ret
