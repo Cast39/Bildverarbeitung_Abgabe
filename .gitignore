@@ -1,8 +1,10 @@
-Images/in/*.JPG
+Images/*
+Images/in/*
+Images/out/*.png
 Images/out/Test/*.png
 Images/out/Train/*.png
-Images/out/png_images/*.png
-Test/*.JPG
-Test/in/*.JPG
+Images/out/png-images/*.png
+Test/*
+Test/in/*
 Test/out/*.png
 Modules/__pycache__/*.pyc
