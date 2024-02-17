@@ -10,6 +10,7 @@ from Modules.crop import crop
 from Modules.orient import orient
 from Modules.scale import scale
 from Modules.save_to_png import saveToPNG
+from Modules.load_as_png import loadAsPNG
 from Modules.divide import divide
 
 # Feel free to test within test_routine.py
@@ -60,11 +61,8 @@ for file_name in file_list:
 
     # Verarbeite nur Bilddateien (ignoriere nicht-Bild-Dateien)
     if file_name.endswith((".jpg", ".jpeg", ".JPG", ".png", ".bmp")):
-        # Bildpfad konkatenieren
-        image_path = os.path.join(folder_path, file_name)
-
         # Bild laden, .PNG konform
-        image = cv2.cvtColor(cv2.imread(image_path), cv2.COLOR_RGB2RGBA)
+        image = loadAsPNG(os.path.join(folder_path, file_name)) #error handling intentionally missing, due to lack of relevance
 
         # Speichere das bearbeitete Bild als PNG-Datei
         output_file_name = os.path.splitext(file_name)[0]

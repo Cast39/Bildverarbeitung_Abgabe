@@ -12,6 +12,7 @@ from Modules.crop import crop
 from Modules.orient import orient
 from Modules.scale import scale
 from Modules.save_to_png import saveToPNG
+from Modules.load_as_png import loadAsPNG
 
 
 TESTDATA = {
@@ -27,11 +28,7 @@ def main():
     print("reading from: " + TESTDATA["path"])
     for file in os.listdir(TESTDATA["path"]):
         if file.lower().endswith((".jpg", ".png", ".tiff", ".tif")):
-            TESTDATA["images"].append(
-                cv2.cvtColor(
-                    cv2.imread(TESTDATA["path"] + "\\" + file), cv2.COLOR_RGB2RGBA
-                )
-            )
+            TESTDATA["images"].append(loadAsPNG(TESTDATA["path"] + "\\" + file)[1]) #error handling intentionally missing, due to lack of relevance
             TESTDATA["filenames"].append(file)
     # DEBUG:print(TESTDATA["images"][0][25, 25])
 
@@ -59,9 +56,9 @@ def main():
         out = np.copy(image)
         show(TESTDATA["filenames"][i])
 
-# implement your sequence here, 
-# every image stored in var out will be displayed by fn show()
-# press any key to move on after show() and 's'-key to save currently displayed image
+        # implement your sequence here,
+        # every image stored in var out will be displayed by fn show()
+        # press any key to move on after show() and 's'-key to save currently displayed image
         ### flow under test:
 
         # segment(image) -> transparentimg
@@ -118,5 +115,6 @@ def main():
         ### pls ignore
         i += 1
         cv2.destroyAllWindows()
+
 
 main()

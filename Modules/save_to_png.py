@@ -12,7 +12,7 @@ def saveToPNG( image, folder_path, file_name,
     output_path = os.path.join(folder_path, output_file_name)
     # try writing it
     if not (os.path.exists(folder_path)):  # unless folder doesn't exist
-        return (-1, "path dosn't exist")
+        return (-1, "path doesn't exist")
     if os.path.exists(output_path) and overwrite == False:  # unless filename exists
         return (-1, "file exists already")
 
