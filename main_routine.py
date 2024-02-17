@@ -52,7 +52,7 @@ def edit_image(image):
 
 # Aktuelles Arbeitsverzeichnis festlegen
 current_directory = getcwd()
-folder_path = path.join(current_directory, "Images\in")
+folder_path = path.join(current_directory, "Images\\in")
 
 # Iteriere über jede Datei im Ordner
 file_list = listdir(folder_path)
@@ -68,16 +68,16 @@ for file_name in file_list:
 
         saveToPNG(
             edit_image(image),
-            path.join(current_directory, "Images\out\png-Images"),
+            path.join(current_directory, "Images\\out\\png-Images"),
             output_file_name,
             overwrite=True,
         )
 
 # Teile Bilder zufällig in Training- und Test-Datensätze
 divide(
-    path.join(current_directory, "Images\out\png-Images"),
-    path.join(current_directory, "Images\out\Train"),
-    path.join(current_directory, "Images\out\Test"),
+    path.join(current_directory, "Images\\out\\png-Images"),
+    path.join(current_directory, "Images\\out\\Train"),
+    path.join(current_directory, "Images\\out\\Test"),
 )
 print("Done.")
 
