@@ -2,23 +2,49 @@
 Datensatz Beispiele:
 ![PCBBilder](https://github.com/amazon-science/spot-diff/blob/main/figures/VisA_samples.png?raw=true)
 ## Erster Ansatz
-Im ersten Ansatz (get_contours.py) wird das Eingangsbild in eine Bitmaske umgewandelt indem es zunächst in ein Graubild und darauf mit einem Schwellwert von **134** in 1 oder 0 umgewandelt wird.
-`1 if img[x,y] > 134 else 0`
+
+### 1. segment.py
+Das Eingangsbild wird mit einer Bitmaske über mehrere Farbkanäle bearbeitet. Es werden alle Pixel - welche die folgenden Schwellwerte nicht überschreiten - schwarz, bzw. transpartent überschrieben.
+
+|Rot  |  Grün | Blau |
+|-----|-------|------|
+|< 133| < 133 | < 150|
+
 Hier ein Beispiel anhand des Bildes "Bildname" aus dem Datensatz.
 (Beispielbild einfügen)
 
-Das maskierte Bild wird darauf in die openCV Funktion `cv2.findContours()` übergeben, welche eine Bloberkennung umsetzt. Mit Hilfe dieser Bloberkennung ist die genaue Bestimmung der Position des PCBs möglich, indem nur Blobs mit einer Fläche größer als **Schwellwert (in Prozent?) und größter Blob)** akzeptiert wird.
+### 2. get_contour.py & 3. boundary_box.py
+**Wieso hier Graubildumwandlung?**
+
+Das maskierte Bild wird darauf in die openCV Funktion `cv2.findContours()` übergeben, welche eine Bloberkennung umsetzt. Mit Hilfe dieser Bloberkennung ist die genaue Bestimmung der Position des PCBs möglich, indem nur der Blob mit einer größten Fläche akzeptiert wird. 
 (Beispielbild einfügen)
 
-Um diesen Blob zur weiteren Verarbeitung verwenden zu können, müssen die Blobs wieder in Rechtecke umgewandelt werden (get_box.py). Hierfür wurde die Funktion `cv2.minAreaRect()` eingesetzt, welche ein Rechteck ausgibt, welches optimal gedreht ist, um alle Pixel eines Blobs mit der kleinsten Fläche zu umschließen (Boundingbox).
-(Beispielbild einfügen)
+Um diesen Blob zur weiteren Verarbeitung verwenden zu können, muss der Blob wieder in ein Rechteck umgewandelt werden (boundary_box.py). Hierfür wurde die Funktion `cv2.minAreaRect()` eingesetzt, welche ein Rechteck ausgibt, welches optimal gedreht ist, um alle Pixel eines Blobs mit der kleinsten Fläche zu umschließen (Boundingbox). Es stellt sich nur das Problem, dass Ausreißer in dem Bild zu einem verdrehten Rechteck führen können.
+(Beispielbild schief einfügen)
 
-In diesem Schritt wird das Rechteck auf 0° Drehung korregiert (align.py). Dazu wird mit dem Winkel aus dem vorigen Schritt eine Rotationsmatrix erstellt `(cv2.getRotationMatrix2D())` und auf das Bild angewendet.
+### 4. align.py
+In diesem Schritt wird das Rechteck auf 0° Drehung korregiert. Dazu wird mit dem Winkel aus dem vorigen Schritt eine Rotationsmatrix erstellt `(cv2.getRotationMatrix2D())` und auf das Bild angewendet. Es wurde bloß ein extra eingefügt **(>45° -> -90°)**.
 (you know the drill)
 
-Nun wird die Erkennung der Boundingbox wiederholt (get_contours.py und get_Box.py), um Anomalien aus der Drehung sicher zu stellen **(Ist das so?)**
+### 5. get_contour.py & 6. boundary_box.py
+Nun wird die Erkennung der Boundingbox wiederholt, um Anomalien aus der Drehung sicher zu stellen **(Ist das so?)**
 (Gegenüberstellung BB Änderung)
 
-Folgend kann das Bild zugeschnitten werden (crop.py)
-**Achtung änderung vllt?**
-Zunächst behalten die Bilder ihre Originalauflösung, wurde die Vorbearbeitung für alle Bilder durchgeführt, wird eine optimale Bildgröße bestimmt, auf welche darauf auf alle Bilder skaliert werden.
+### 7. align.py
+Nun wird align wieder ausgeführt, dieses mal jedoch auf das Originalbild, um den Hintergrund und die originalen Farben des Bildes bei zu behalten.
+
+### 8. crop.py
+Folgend kann das Bild zugeschnitten werden. Hierfür wird ein optimales Seitenverhältnis von **w / h = 980 / 580 = 1,69** vorgegeben. Stimmt dieses nicht mit der Bounding Box überein, wird diese auf das entsprechende Verhältnis nach oben erweitert.
+Darauf wird das Bild auf diese Bounding Box ausgeschnitten.
+
+
+### 9. orient.py
+Orientieren, Schwerpunkt, Dreh dreh -> Bums
+
+### 10. scale.py
+Folgend werden alle bilder mit `cv2.resize()` auf **980 x 580** skaliert.
+
+
+## Zweiter Ansatz: SVM
+
+
