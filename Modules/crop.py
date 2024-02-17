@@ -1,15 +1,15 @@
-import cv2
-import numpy as np
+from cv2 import boundingRect
+from numpy import round
 
 
 def crop(image, box, aspect_ratio=980 / 580):
 
     # Koordinaten der Box extrahieren
-    x, y, w, h = cv2.boundingRect(box)
+    x, y, w, h = boundingRect(box)
 
     # case pins are deformed over board
-    box_aspect_ratio = np.round(w / h, 2)
-    aspect_ratio = np.round(aspect_ratio, 2)
+    box_aspect_ratio = round(w / h, 2)
+    aspect_ratio = round(aspect_ratio, 2)
     if box_aspect_ratio > aspect_ratio:
         vert_pad = int((w // aspect_ratio) - h)
     else:

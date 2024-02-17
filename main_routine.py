@@ -1,5 +1,4 @@
-import cv2
-import os
+from os import path, listdir, getcwd
 
 # own module
 from Modules.segment import segment
@@ -52,34 +51,33 @@ def edit_image(image):
 ### handle whole dataset
 
 # Aktuelles Arbeitsverzeichnis festlegen
-current_directory = os.getcwd()
-folder_path = os.path.join(current_directory, "Images\in")
+current_directory = getcwd()
+folder_path = path.join(current_directory, "Images\in")
 
 # Iteriere über jede Datei im Ordner
-file_list = os.listdir(folder_path)
+file_list = listdir(folder_path)
 for file_name in file_list:
 
     # Verarbeite nur Bilddateien (ignoriere nicht-Bild-Dateien)
     if file_name.endswith((".jpg", ".jpeg", ".JPG", ".png", ".bmp")):
         # Bild laden, .PNG konform
-        image = loadAsPNG(os.path.join(folder_path, file_name)) #error handling intentionally missing, due to lack of relevance
+        _, image = loadAsPNG(path.join(folder_path, file_name)) #error handling intentionally missing, due to lack of relevance
 
         # Speichere das bearbeitete Bild als PNG-Datei
-        output_file_name = os.path.splitext(file_name)[0]
-        output_path = os.path.join(folder_path, output_file_name)
+        output_file_name = path.splitext(file_name)[0]
 
         saveToPNG(
             edit_image(image),
-            os.path.join(current_directory, "Images\out\png-Images"),
+            path.join(current_directory, "Images\out\png-Images"),
             output_file_name,
             overwrite=True,
         )
 
 # Teile Bilder zufällig in Training- und Test-Datensätze
 divide(
-    os.path.join(current_directory, "Images\out\png-Images"),
-    os.path.join(current_directory, "Images\out\Train"),
-    os.path.join(current_directory, "Images\out\Test"),
+    path.join(current_directory, "Images\out\png-Images"),
+    path.join(current_directory, "Images\out\Train"),
+    path.join(current_directory, "Images\out\Test"),
 )
 print("Done.")
 

@@ -1,7 +1,7 @@
-import cv2
+from cv2 import resize
 
 # Maybe replace by "stamp"
 
 
 def scale(image):
-    return cv2.resize(image, (980, 580))
+    return resize(image, (980, 580))

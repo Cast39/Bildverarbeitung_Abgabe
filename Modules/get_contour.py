@@ -1,10 +1,10 @@
-import cv2
+from cv2 import cvtColor, findContours, contourArea,  COLOR_RGBA2GRAY, RETR_EXTERNAL, CHAIN_APPROX_SIMPLE
 
 def get_contour(image):
     # Berechne das umschließende Rechteck nach der Rotation
-    gray = cv2.cvtColor(image, cv2.COLOR_RGBA2GRAY)
+    gray = cvtColor(image, COLOR_RGBA2GRAY)
     #FEATURE-BRANCH: gray = cv2.bitwise_not(gray)
-    contours, _ = cv2.findContours(gray, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-    return max(contours, key=cv2.contourArea)
+    contours, _ = findContours(gray, RETR_EXTERNAL, CHAIN_APPROX_SIMPLE)
+    return max(contours, key=contourArea)
             
 

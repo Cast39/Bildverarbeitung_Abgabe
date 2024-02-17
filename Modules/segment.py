@@ -1,11 +1,11 @@
-import cv2
+from cv2 import split
 
-# Segmentierung zerpfülckt Bild zu stark, TODO: Blobanalyse o.Ä.
+# Segmentierung zerpfülckt Bild zu stark, TODO: Blobanalyse o.Ä. als Alternative testen
 
 
 def segment(image):
     # Aufteilen des Bildes in die einzelnen Kanäle (RGBA)
-    r, g, b, _ = cv2.split(image)
+    r, g, b, _ = split(image)
 
     # Bedingungsmaske für jede Klasse definieren
     # Klasse 1: Rot

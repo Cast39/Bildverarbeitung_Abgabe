@@ -7,4 +7,5 @@ Images/out/png-images/*.png
 Test/*
 Test/in/*
 Test/out/*.png
+__pycache__/*.pyc
 Modules/__pycache__/*.pyc
