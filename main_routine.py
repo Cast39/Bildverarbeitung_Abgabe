@@ -16,7 +16,7 @@ from Modules.divide import divide
 # only then replace the following with a better sequence if found
 ### define algorithm:
 # 1. segment(image) -> transparentimg
-# 2. get_contour(transparentimage) -> contour
+# 2. get_contour(transparentimg) -> contour
 # 3. boundary_box(contour) -> 'box[], center, size, angle
 
 # 4. align(transparentimg, center, angle) -> altransimg
@@ -33,21 +33,20 @@ from Modules.divide import divide
 
 ### implementation of algorithm:
 def edit_image(image):
-    transparentImage = segment(image)  # 1
-    _, center, size, angle = boundary_box(get_contour(transparentImage))  # 2+3
+    helperImg = segment(image.copy())  # 1
+    _, center, size, angle = boundary_box(get_contour(helperImg))  # 2+3
 
-    alignedImage = align(transparentImage, center, angle, size)  # 4
-    box,_,_,_ = boundary_box(get_contour(alignedImage))  # 5+6
+    align(helperImg, center, angle, size)  # 4
+    box,_,_,_ = boundary_box(get_contour(helperImg))  # 5+6
     # also possible instead of 5+6, maybe own module "merge"?
     # segmentiertesalignImage = seg.segmentierung(alignImage)
     # segmentiertesalignImage = cv2.bitwise_not(segmentiertesalignImage)
 
-    alignedImage = align(image, center, angle, size)  # 7
+    align(image, center, angle, size)  # 7
     # DEBUG: cv2.drawContours(alignImage, [align_box], 0, (0, 255, 0, 255), 2), not for main_routine pls reffer to test_routine
-    image = crop(alignedImage, box)  # 8
-    image = orient(image)  # 9
+    image = crop(image, box)  # 8
+    orient(image)  # 9
     return scale(image)  # 10
-
 
 ### handle whole dataset
 
@@ -73,14 +72,14 @@ for file_name in file_list:
 
         saveToPNG(
             edit_image(image),
-            os.path.join(current_directory, "Images\out"),
+            os.path.join(current_directory, "Images\out\png-Images"),
             output_file_name,
             overwrite=True,
         )
 
 # Teile Bilder zufällig in Training- und Test-Datensätze
 divide(
-    os.path.join(current_directory, "Images\out"),
+    os.path.join(current_directory, "Images\out\png-Images"),
     os.path.join(current_directory, "Images\out\Train"),
     os.path.join(current_directory, "Images\out\Test"),
 )

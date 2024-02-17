@@ -1,16 +1,16 @@
 import cv2
+import numpy as np
 
 def orient(image):
-    ret = image.copy()
     height, width = image.shape[:2]
 
     # case of perfect vertical alignement
     if height > width:
-        ret = cv2.rotate(image, cv2.ROTATE_90_CLOCKWISE)
+        cv2.rotate(image, cv2.ROTATE_90_CLOCKWISE, image)
 
     # define vertical center
-    _,_,b,_ = cv2.split(image)
-    M = cv2.moments(b, True)
+    b,_,_,_ = cv2.split(image)
+    M = cv2.moments(np.floor_divide(b,127), True)
 
     # Vermeide eine Division durch Null
     if M["m00"] != 0:
@@ -20,5 +20,5 @@ def orient(image):
         cY = 0
 
     if cY > height // 2:
-        ret = cv2.rotate(image, cv2.ROTATE_180)
-    return ret
+        cv2.rotate(image, cv2.ROTATE_180, image)
+    return image

@@ -16,5 +16,5 @@ def crop(image, box, aspect_ratio=980 / 580):
         vert_pad = 0
 
     # Bildausschnitt basierend auf den Boxkoordinaten und padding ausschneiden
-    cropped_image = image[(y - vert_pad) : (y + h), (x) : (x + w)]
-    return cropped_image
+    return image[(y - vert_pad) : (y + h), (x) : (x + w)]
+    

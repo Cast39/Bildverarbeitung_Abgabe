@@ -8,10 +8,6 @@ def align(image, center, angle, size=0):
         angle -= 90
         # DEBUG: print("angle is bigger 45")
 
-    alignImage = image.copy()
     # Rotiere das Bild um den Winkel
     align_matrix = cv2.getRotationMatrix2D(center, angle, scale=1)
-    alignImage = cv2.warpAffine(
-        alignImage, align_matrix, (alignImage.shape[1], alignImage.shape[0])
-    )
-    return alignImage
+    return cv2.warpAffine(image, align_matrix, (image.shape[1], image.shape[0]), image)

@@ -65,7 +65,7 @@ def main():
         ### flow under test:
 
         # segment(image) -> transparentimg
-        image = segment(image)
+        segment(image)
         out = image.copy()
         show("segmented")
 
@@ -76,7 +76,7 @@ def main():
 
         # get_contour(transparentimage) -> contour
         contour = get_contour(image)
-        cv2.fillPoly(out, contour, (0, 255, 0, 255))
+        cv2.fillPoly(out, contour, (0, 0, 255, 255))
         show("contour")
 
         # boundary_box(contur) -> box[], center, angle
@@ -85,7 +85,7 @@ def main():
         show("boundary")
 
         # align(image, center, angle) -> alignedimg
-        image = align(image, center, angle, size)
+        align(image, center, angle, size)
         out = image.copy()
         out = cv2.polylines(out, [box], True, color=(255, 0, 0, 255), thickness=4)
         show("aligned")
@@ -97,7 +97,7 @@ def main():
         show("cropped")
 
         # orient(alignedimg) -> orientedimg
-        image = orient(image)
+        orient(image)
         out = image.copy()
         show("oriented")
 
