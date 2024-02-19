@@ -1,12 +1,14 @@
 import os
 import cv2
 import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib
 
 # own module
 from Modules.segment import segment
 from Modules.remove_background import remove_background
 from Modules.get_contour import get_contour
-from Modules.boundary_box import boundary_box
+from Modules.get_kontur_graph import get_kontur_graph
 from Modules.align import align
 from Modules.crop import crop
 from Modules.orient import orient
@@ -64,7 +66,7 @@ def main():
         # segment(image) -> transparentimg
         segment(image)
         out = image.copy()
-        show("segmented")
+        #show("segmented")
 
         # TODO: more precise alternative to segment
         # remove_background(image, rey, +-15)
@@ -74,11 +76,18 @@ def main():
         # get_contour(transparentimage) -> contour
         contour = get_contour(image)
         cv2.fillPoly(out, contour, (0, 0, 255, 255))
-        show("contour")
+        #show("contour")
 
         # boundary_box(contur) -> box[], center, angle
-        box, center, size, angle = boundary_box(contour)
-        cv2.polylines(out, [box], True, color=(255, 0, 0, 255), thickness=4)
+        #box, center, size, angle = boundary_box(contour)
+        konturverlauf = np.array(get_kontur_graph(contour))
+        #cv2.polylines(out, [box], True, color=(255, 0, 0, 255), thickness=4)
+        
+        plt.plot(konturverlauf[:,0], konturverlauf[:,1]) # x=winkel y=radius
+        plt.show()
+        plt.plot(konturverlauf[:,0], konturverlauf[:,2]) # x=winkel y=radius
+        plt.show()
+        return
         show("boundary")
 
         # align(image, center, angle) -> alignedimg
