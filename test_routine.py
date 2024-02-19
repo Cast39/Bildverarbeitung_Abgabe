@@ -9,6 +9,7 @@ from Modules.segment import segment
 from Modules.remove_background import remove_background
 from Modules.get_contour import get_contour
 from Modules.get_kontur_graph import get_kontur_graph
+import Modules.boundary_box as boundary_box
 from Modules.align import align
 from Modules.crop import crop
 from Modules.orient import orient
@@ -79,16 +80,24 @@ def main():
         #show("contour")
 
         # boundary_box(contur) -> box[], center, angle
-        #box, center, size, angle = boundary_box(contour)
-        konturverlauf = np.array(get_kontur_graph(contour))
-        #cv2.polylines(out, [box], True, color=(255, 0, 0, 255), thickness=4)
-        
+        box, center, size, angle = boundary_box(contour)
+        cv2.polylines(out, [box], True, color=(255, 0, 0, 255), thickness=4)
+        show("boundary")
+
+        # get Precise Edges
+        konturverlauf = np.array(boundary_box.get_kontur_graph(contour))
         plt.plot(konturverlauf[:,0], konturverlauf[:,1]) # x=winkel y=radius
         plt.show()
-        plt.plot(konturverlauf[:,0], konturverlauf[:,2]) # x=winkel y=radius
+        plt.plot(konturverlauf[:,0], konturverlauf[:,2]) # rounded graph
         plt.show()
-        return
+
+
+        # get boundary_box
+        box, center, size, angle = boundary_box.get_boundary_box(konturverlauf)
+        cv2.polylines(out, [box], True, color=(255, 0, 0, 255), thickness=4)
+
         show("boundary")
+        return
 
         # align(image, center, angle) -> alignedimg
         align(image, center, angle, size)
