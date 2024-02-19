@@ -58,7 +58,7 @@ Dies hat jedoch nicht funktioniert, da die Punkte alle auf der Grenze des PCBs l
 Stattdessen hätte der Ansatz mit einer direkten Analyse des Blobs auf die Binärmaske ausprobiert werden können.
 
 ## Dritter Ansatz: Blobanalyse
-Mit diesem Ansatz soll die Erkennung der Eckpunkte gesteigert werden. Hierfür werden die Winkel der Konturpunkte (vom Schwerpunkt aus) berechnet und in 1° Schritten abgetastet.
+Mit dem Ansatz in **feature/Blobanalyse** soll die Erkennung der Eckpunkte gesteigert werden. Hierfür werden die Winkel der Konturpunkte (vom Schwerpunkt aus) berechnet und in 1° Schritten abgetastet.
 ![Blobanalyse_Graph](https://github.com/Cast39/Bildverarbeitung_Abgabe/blob/main/figures/Blobanalyse_contour_graph.png?raw=true)
 
 Darauf werden vom original Schwerpunkt im Bereich von +-10° nach dem Wert mit dem weitesten Abstand gesucht und als neuer Eckpunkt definiert.
