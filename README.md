@@ -27,8 +27,7 @@ In diesem Schritt wird das Rechteck auf 0° Drehung korregiert. Dazu wird mit de
 (you know the drill)
 
 ### 5. get_contour.py & 6. boundary_box.py
-Nun wird die Erkennung der Boundingbox wiederholt, um Anomalien aus der Drehung sicher zu stellen **(Ist das so?)**
-(Gegenüberstellung BB Änderung)
+Nun wird die Erkennung der Boundingbox auf das gedrehte Bild angewand.
 
 ### 7. align.py
 Nun wird align wieder ausgeführt, dieses mal jedoch auf das Originalbild, um den Hintergrund und die originalen Farben des Bildes bei zu behalten.
@@ -39,7 +38,7 @@ Darauf wird das Bild auf diese Bounding Box ausgeschnitten.
 
 
 ### 9. orient.py
-Orientieren, Schwerpunkt, Dreh dreh -> Bums
+Durch das Cropes Bildes ist es so, dass der Spunkt der PCB in einer Seite des Bildes sein wird. Daher wird das Bild dann an diesem dann ausgerichtet. 
 
 ### 10. scale.py
 Folgend werden alle bilder mit `cv2.resize()` auf **980 x 580** skaliert.
