@@ -59,5 +59,8 @@ Stattdessen hätte der Ansatz mit einer direkten Analyse des Blobs auf die Binä
 
 ## Dritter Ansatz: Blobanalyse
 Mit diesem Ansatz soll die Erkennung der Eckpunkte gesteigert werden. Hierfür werden die Winkel der Konturpunkte (vom Schwerpunkt aus) berechnet und in 1° Schritten abgetastet.
+![Blobanalyse_Graph](https://github.com/Cast39/Bildverarbeitung_Abgabe/blob/main/figures/Blobanalyse_contour_graph.png?raw=true)
+
 Darauf werden vom original Schwerpunkt im Bereich von +-10° nach dem Wert mit dem weitesten Abstand gesucht und als neuer Eckpunkt definiert.
-Der Ansatz konnte jedoch nicht zu Ende geführt werden, da sich die Ermittelten Werte nicht von den zuvor ermittelten Eckpunkten unterschieden.
+Der Ansatz wurde jedoch nicht zu Ende geführt, da sich die ermittelten Werte nicht von den zuvor berechneten Eckpunkten unterschieden.
+![Blobanalyse_Graph](https://github.com/Cast39/Bildverarbeitung_Abgabe/blob/main/figures/Blobanalyse_precise_boundary.png?raw=true)
