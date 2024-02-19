@@ -62,61 +62,29 @@ def boundary_from_graph(contour_graph, rough_box, rough_center, resolution=1, se
     mean_radia = contour_graph[:, 2]
     #print(angles)
 
-    is_rising = True
     rough_angles = []
     precise_boxpoints = []
     
     for i, rough_boxpoint in enumerate(rough_box):
         rough_angles.append(np.arctan2(rough_boxpoint[0], rough_boxpoint[1])*180/np.pi)
-        startwiggle = rough_angles[-1] - searchwiggle
-        endwiggle = rough_angles[-1] + searchwiggle
+        startwiggle = rough_angles[-1] - searchwiggle % len(angles)
+        endwiggle = rough_angles[-1] + searchwiggle % len(angles)
 
         # umliegende maxima finden
-        print(f"searching for point ({rough_boxpoint[0]}, {rough_boxpoint[1]}) ({i})")
-        maxima = []
+        #print(f"searching for point ({rough_boxpoint[0]}, {rough_boxpoint[1]}) ({i})")
+        i = int(startwiggle//resolution)
+        maximum = {"angle": angles[i] , "radius": radia[i], "point": rough_boxpoint}
         for i in np.arange(startwiggle//resolution, endwiggle//resolution, resolution):
-            # print(f"i {i} | i%{len(angles)}={i % len(angles)}")
-            i = int(i % len(angles))
-            if is_rising and radia[i] < radia[i-1]:
-                print(f"MAXIMUM at {angles[i]}, {radia[i]}")
-                maxima.append({"angle": angles[i] , "radius": radia[i], "point": rough_boxpoint})
-                is_rising = False
+            i = int(i) % len(angles)
+            if radia[i] > maximum["radius"]:
+                maximum = {"angle": angles[i] , "radius": radia[i], "point": rough_boxpoint}
 
-            elif not is_rising and radia[i] > radia[i-1]:
-                is_rising = True
-
-        # Punkte Filtern für nähsten
-        if len(maxima) == 0:
-            precise_boxpoints.append(rough_boxpoint)
-            print("minimum(filled):")
-            print(rough_boxpoint)
-        
-        elif len(maxima) == 1:
-            precise_boxpoints.append(maxima[0]["point"])
-            print("minimum(spotted):")
-            print(maxima[0]["point"])
-        
-        elif len(maxima) > 1:
-            min_maximum_point = maxima[0]
-            min_diff = abs(rough_angles[-1] - min_maximum_point["angle"])
-            
-            for maximum in maxima:
-                diff = abs(rough_angles[-1] - maximum["angle"])
-                if diff < min_diff:
-                    min_diff = diff
-                    min_maximum_point = maximum["point"] # TODO -> Genauen Punkt berechnen
-            print("minimum(eval):")
-            print(min_maximum_point)
-            precise_boxpoints.append(min_maximum_point)
-        print()
+        precise_boxpoints.append(maximum)
     
     print("alles:")
     print(precise_boxpoints)
-    return precise_boxpoints
-
-
-    box = boxPoints(rect)
+    """box = boxPoints(precise_boxpoints)
     box = np.int32(box)
-    center, size, angle = rect
 
-    return (box, center, size, angle)
+    return (box)"""
+    return precise_boxpoints

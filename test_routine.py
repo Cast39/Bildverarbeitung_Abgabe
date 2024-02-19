@@ -76,7 +76,7 @@ def main():
         # get_contour(transparentimage) -> contour
         contour = get_contour(image)
         cv2.fillPoly(out, contour, (0, 0, 255, 255))
-        #show("contour")
+        show("contour")
 
         # boundary_box(contur) -> box[], center, angle
         rough_box, rough_center, rough_size, rough_angle = boundary_box.boundary_from_contour(contour)
@@ -94,7 +94,9 @@ def main():
         #box, center, size, angle = boundary_box.boundary_from_graph(konturverlauf, rough_box, rough_center)
         box = boundary_box.boundary_from_graph(konturverlauf, rough_box, rough_center)
         cv2.polylines(out, [rough_box], True, color=(0, 255, 0, 255), thickness=4)
-        cv2.polylines(out, [box], True, color=(255, 0, 0, 255), thickness=4)
+        for point in box:
+            print(point)
+            cv2.circle(out, point["point"], 4, color=(0, 0, 255, 255), thickness=2)
         show("precise boundary")
         return
 
