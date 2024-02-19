@@ -18,7 +18,7 @@ Hier ein Beispiel anhand des Bildes "Bildname" aus dem Datensatz.
 **Wieso hier Graubildumwandlung?**
 
 Das maskierte Bild wird darauf in die openCV Funktion `cv2.findContours()` übergeben, welche eine Bloberkennung umsetzt. Mit Hilfe dieser Bloberkennung ist die genaue Bestimmung der Position des PCBs möglich, indem nur der Blob mit einer größten Fläche akzeptiert wird. 
-![Konturerkannt](https://github.com/Cast39/Bildverarbeitung_Abgabe/blob/main/figures/3-normal_0029_contour.png?raw=true)
+<!--![Konturerkannt](https://github.com/Cast39/Bildverarbeitung_Abgabe/blob/main/figures/3-normal_0029_contour.png?raw=true)-->
 ![Boundary Box](https://github.com/Cast39/Bildverarbeitung_Abgabe/blob/main/figures/4-normal_0029_boundary.png?raw=true)
 
 Um diesen Blob zur weiteren Verarbeitung verwenden zu können, muss der Blob wieder in ein Rechteck umgewandelt werden (boundary_box.py). Hierfür wurde die Funktion `cv2.minAreaRect()` eingesetzt, welche ein Rechteck ausgibt, welches optimal gedreht ist, um alle Pixel eines Blobs mit der kleinsten Fläche zu umschließen (Boundingbox). Es stellt sich nur das Problem, dass Ausreißer in dem Bild zu einem verdrehten Rechteck führen können.
@@ -52,5 +52,12 @@ Folgend werden alle bilder mit `cv2.resize()` auf **980 x 580** skaliert.
 
 
 ## Zweiter Ansatz: SVM
+Es wurde in dem **feature/SVM** Branch versucht, eine Klassifizierung mit einem SVM zu realisieren.
+Dafür war der Ansatz, die SVM auf jedes Bild einzeln zu trainieren, sodass sich die Grenzen der SVM an die Grenzen des PCBs anschmiegen.
+Dies hat jedoch nicht funktioniert, da die Punkte alle auf der Grenze des PCBs liegen und nicht im PCB.
+Stattdessen hätte der Ansatz mit einer direkten Analyse des Blobs auf die Binärmaske ausprobiert werden können.
 
-
+## Dritter Ansatz: Blobanalyse
+Mit diesem Ansatz soll die Erkennung der Eckpunkte gesteigert werden. Hierfür werden die Winkel der Konturpunkte (vom Schwerpunkt aus) berechnet und in 1° Schritten abgetastet.
+Darauf werden vom original Schwerpunkt im Bereich von +-10° nach dem Wert mit dem weitesten Abstand gesucht und als neuer Eckpunkt definiert.
+Der Ansatz konnte jedoch nicht zu Ende geführt werden, da sich die Ermittelten Werte nicht von den zuvor ermittelten Eckpunkten unterschieden.
