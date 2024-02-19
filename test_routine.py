@@ -8,7 +8,6 @@ import matplotlib
 from Modules.segment import segment
 from Modules.remove_background import remove_background
 from Modules.get_contour import get_contour
-from Modules.get_kontur_graph import get_kontur_graph
 import Modules.boundary_box as boundary_box
 from Modules.align import align
 from Modules.crop import crop
@@ -57,7 +56,7 @@ def main():
 
         ###init
         out = np.copy(image)
-        show(TESTDATA["filenames"][i])
+        #show(TESTDATA["filenames"][i])
 
         # implement your sequence here,
         # every image stored in var out will be displayed by fn show()
@@ -80,23 +79,23 @@ def main():
         #show("contour")
 
         # boundary_box(contur) -> box[], center, angle
-        box, center, size, angle = boundary_box(contour)
-        cv2.polylines(out, [box], True, color=(255, 0, 0, 255), thickness=4)
-        show("boundary")
+        rough_box, rough_center, rough_size, rough_angle = boundary_box.boundary_from_contour(contour)
+        cv2.polylines(out, [rough_box], True, color=(255, 0, 0, 255), thickness=4)
+        show("rough boundary")
 
-        # get Precise Edges
-        konturverlauf = np.array(boundary_box.get_kontur_graph(contour))
+
+        # get Controur Graph
+        konturverlauf = np.array(boundary_box.contour_graph(contour))
         plt.plot(konturverlauf[:,0], konturverlauf[:,1]) # x=winkel y=radius
-        plt.show()
         plt.plot(konturverlauf[:,0], konturverlauf[:,2]) # rounded graph
         plt.show()
 
-
-        # get boundary_box
-        box, center, size, angle = boundary_box.get_boundary_box(konturverlauf)
+        # get precise boundary_box
+        #box, center, size, angle = boundary_box.boundary_from_graph(konturverlauf, rough_box, rough_center)
+        box = boundary_box.boundary_from_graph(konturverlauf, rough_box, rough_center)
+        cv2.polylines(out, [rough_box], True, color=(0, 255, 0, 255), thickness=4)
         cv2.polylines(out, [box], True, color=(255, 0, 0, 255), thickness=4)
-
-        show("boundary")
+        show("precise boundary")
         return
 
         # align(image, center, angle) -> alignedimg
